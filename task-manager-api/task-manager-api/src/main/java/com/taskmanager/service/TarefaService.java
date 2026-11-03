@@ -27,14 +27,30 @@ public class TarefaService {
             if (tarefa.getId() == id)
                 return tarefa;
         }
-        return null;
+        throw new TarefaNaoEncontradaException("Tarefa nao foi encontrada!");
     }
 
     public Tarefa criarTarefa(Tarefa tarefa) {
         if (tarefa == null)
             throw new IllegalArgumentException("Tarafa invalida!");
-        var newTarefa = new Tarefa(tarefa.getTitulo(), tarefa.getConteudo());
-        tarefas.add(newTarefa);
-        return newTarefa;
+        tarefas.add(tarefa);
+        return tarefa;
     }
+
+    public Tarefa atualizarTarefa(int id, Tarefa tarefa){
+        var oldTarefa = buscarTarefa(id);
+        if (tarefa == null)
+            throw new IllegalArgumentException("Tarafa invalida!");
+        oldTarefa.setTitulo(tarefa.getTitulo());
+        oldTarefa.setConteudo(tarefa.getConteudo());
+        return oldTarefa;
+    }
+
+    public void removerTarefa(int id){
+        var tarefaTarget = buscarTarefa(id);
+        tarefas.remove(tarefaTarget);
+    }
+
+
+    
 }
